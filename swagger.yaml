@@ -1,0 +1,116 @@
+swagger: "2.0"
+info:
+  description: "This is the server for the test challenge for Wazuh. \n You can find the API here https://wazuh-challenge-server.herokuapp.com/ \n The site https://wazuh-challenge.netlify.app/"
+  version: "1.0.0"
+  title: "Wazuh Challenge by Lucas Rojas"
+host: "wazuh-challenge-server.herokuapp.com"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /tasks:
+    get:
+      tags:
+      - "tasks"
+      summary: "Get all tasks"
+      description: ""
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "offset"
+        description: "Offset to retrieve the list"
+        type: "number"
+        required: false
+      - in: "query"
+        type: "number"
+        name: "limit"
+        description: "Amount of items"
+        required: false
+      - in: "query"
+        type: "string"
+        name: "title"
+        description: "Text filter"
+        required: false
+      - in: "query"
+        type: "boolean"
+        name: "completed"
+        description: "Retrieve only the completed tasks"
+        required: false
+      - in: "query"
+        type: "number"
+        name: "userId"
+        description: "Filter by user id"
+        required: false
+        
+      responses:
+        "200":
+          description: "OK"
+
+  /tasks/{id}:
+    get:
+      tags:
+      - "tasks"
+      summary: "Finds task by id"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Task id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+
+  /users:
+    get:
+      tags:
+      - "users"
+      summary: "Get all users"
+      description: "Retrieves all uers."
+      responses:
+        "200":
+          description: "successful operation"
+  /users/{user_id}:
+    get:
+      tags:
+      - "users"
+      summary: "Find user by ID"
+      description: "Returns a single user"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "user_id"
+        in: "path"
+        description: "ID of user to return"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+
+  /users/{user_id}/tasks:
+    get:
+      tags:
+      - "users"
+      summary: "Get tasks from a specific user"
+      description: "Returns tasks assigned to an user"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user_id"
+        in: "path"
+        description: "ID of user"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
