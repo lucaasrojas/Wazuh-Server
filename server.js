@@ -47,8 +47,8 @@ app.get('/api/users', (req, res) => {
 })
 app.get('/api/users/:user_id', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")
-    const response = Services.users.getById({ id: req.params.user_id, data: db.users })
-    return res.send(response)
+    const response = Services.users.getById({ id: req.params.user_id, data: db.users, res:res })
+    return response
 })
 app.get('/api/users/:user_id/tasks', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")

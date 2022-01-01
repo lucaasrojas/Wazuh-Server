@@ -1,3 +1,5 @@
+const AppError = require('../Utils/AppError')
+
 const tasks = {
     get: ({ data, offset = 0, limit = 10, title, completed, userId }) => {
         const arrOffset = Number(offset)
@@ -33,9 +35,13 @@ const users = {
             data: data
         }
     },
-    getById: ({ data, id }) => {
+    getById: ({ data, id, res }) => {
         const user = data.filter(user => user.id === Number(id))[0]
-        return user
+        
+        if(!user) {
+            return res.status(404).json({message: `User with ID ${id} was not found`, status: "fail"})
+        }
+        return res.status(200).json(user)
     },
     getTasksFromUser: ({ data, id, offset = 0, limit = 10, completed, title }) => {
         const userId = Number(id)
