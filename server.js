@@ -31,29 +31,29 @@ fs.readFile('./Assets/tasks.json', 'utf8', (err, data) => {
 app.get('/api/tasks', (req, res) => {
     const response = Services.tasks.get({ data: db.tasks, ...req.query })
     res.header("Access-Control-Allow-Origin", "*")
-    return res.send(response)
+    return res.status(200).json(response)
 })
 
 app.get('/api/tasks/:id', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")
     const response = Services.tasks.getById({ data: db.tasks, id: req.params.id })
-    return res.send(response)
+    return res.status(response.status).json(response.json)
 })
 
 app.get('/api/users', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")
     const response = Services.users.get({ data: db.users })
-    return res.send(response)
+    return res.status(response.status).json(response.json)
 })
 app.get('/api/users/:user_id', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")
-    const response = Services.users.getById({ id: req.params.user_id, data: db.users, res:res })
-    return response
+    const response = Services.users.getById({ id: req.params.user_id, data: db.users })
+    return res.status(response.status).json(response.json)
 })
 app.get('/api/users/:user_id/tasks', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*")
     const response = Services.users.getTasksFromUser({ id: req.params.user_id, ...req.query, data: db.tasks })
-    return res.send(response)
+    return res.status(response.status).json(response.json)
 })
 
 app.listen(port, () => {

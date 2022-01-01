@@ -24,31 +24,64 @@ const tasks = {
         }
     },
     getById: ({ data, id }) => {
-        return data.filter(task => task.id === Number(id))[0]
+        const task = data.filter(task => task.id === Number(id))[0]
+        if (!task) {
+            return {
+                status: 404,
+                json: {
+                    message: `Task with ID ${id} was not found`,
+                    status: "fail"
+                }
+            }
+        }
+        return {
+            status: 200,
+            json: task
+        }
     }
 }
 
 const users = {
     get: ({ data }) => {
         return {
-            total_items: data.length,
-            data: data
+            status: 200,
+            json: {
+                total_items: data.length,
+                data: data
+            }
         }
     },
     getById: ({ data, id, res }) => {
         const user = data.filter(user => user.id === Number(id))[0]
-        
-        if(!user) {
-            return res.status(404).json({message: `User with ID ${id} was not found`, status: "fail"})
+
+        if (!user) {
+            return {
+                status: 404,
+                json: {
+                    message: `User with ID ${id} was not found`,
+                    status: "fail"
+                }
+            }
         }
-        return res.status(200).json(user)
+        return {
+            status: 200,
+            json: user
+        }
     },
     getTasksFromUser: ({ data, id, offset = 0, limit = 10, completed, title }) => {
         const userId = Number(id)
         const arrOffset = Number(offset)
         const arrLimit = Number(limit) + Number(offset)
         let filteredArray = data.filter(task => task.user_id === userId)
-
+        if (!filteredArray.length) {
+            return {
+                status: 404,
+                json: {
+                    message: `No tasks were found for user with id ${id}`,
+                    status: "fail"
+                }
+            }
+        }
         if (completed) {
             filteredArray = filteredArray.filter(el => el.completed)
         }
@@ -58,8 +91,11 @@ const users = {
         filteredArray = filteredArray.slice(arrOffset, arrLimit)
 
         return {
-            total_items: filteredArray.length,
-            data: filteredArray
+            status: 200,
+            json: {
+                total_items: filteredArray.length,
+                data: filteredArray
+            }
         }
     }
 }
