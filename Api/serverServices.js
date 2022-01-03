@@ -51,7 +51,7 @@ const users = {
             }
         }
     },
-    getById: ({ data, id, res }) => {
+    getById: ({ data, id }) => {
         const user = data.filter(user => user.id === Number(id))[0]
 
         if (!user) {
